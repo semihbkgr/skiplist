@@ -38,6 +38,31 @@ func TestSkipList_Insert(t *testing.T) {
 	}
 }
 
+func TestSkipList_Insert_duplicatedKeys(t *testing.T) {
+	l := New[int, string]()
+
+	for i := 0; i < 100; i++ {
+		v := fmt.Sprintf("%v-%d", time.Now(), i)
+		l.Insert(i, v)
+	}
+
+	kvMap := make(map[int]string)
+	for i := 0; i < 100; i++ {
+		v := fmt.Sprintf("%v-%d", time.Now(), i)
+		l.Insert(i, v)
+		kvMap[i] = v
+	}
+
+	for i := 0; i < 100; i++ {
+		v, ok := l.Get(i)
+		assert.True(t, ok)
+		assert.Equal(t, v, kvMap[i])
+	}
+
+	length := l.Length()
+	assert.Equal(t, 100, length)
+}
+
 func TestSkipList_Get(t *testing.T) {
 	l := New[int, string]()
 

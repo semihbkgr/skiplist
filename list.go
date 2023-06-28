@@ -86,6 +86,11 @@ func (l *SkipList[K, V]) Insert(key K, val V) {
 		}
 		levelTraceNodes[i] = n
 	}
+	n = n.next[0]
+	if n != nil && n.key == key {
+		n.val = val
+		return
+	}
 	n = newNode(key, val, nodeLevel)
 	for i := 0; i <= nodeLevel; i++ {
 		n.next[i] = levelTraceNodes[i].next[i]
